@@ -243,25 +243,45 @@ Usage:
 USAGE
 end
 
-if ARGV.count == 0
-  Forth.new.repl
-elsif ARGV.count == 2
-  case ARGV[0]
+def code_from_args args
+  case args[0]
   when '-c'
-    code = ARGV[1]
+    args[1]
   when '-f'
-    code = File.read(ARGV[1])
+    File.read(args[1])
   else
     print_usage
     exit 1
   end
+end
 
+def run_code forth, code
   begin
-    Forth.new.compile_and_run code
+    forth.compile_and_run code
   rescue => e
     p e
     exit 1
   end
+end
+
+if ARGV.count == 1
+  unless ARGV[0] == 'repl'
+    print_usage
+    exit 1
+  end
+  Forth.new.repl
+elsif ARGV.count == 2
+  code = code_from_args ARGV
+  run_code Forth.new, code
+elsif ARGV.count == 3
+  unless ARGV[-1] == 'repl'
+    print_usage
+    exit 1
+  end
+  code = code_from_args ARGV[0..-2]
+  forth = Forth.new
+  run_code forth, code
+  forth.repl
 else
   print_usage
   exit 1
