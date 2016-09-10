@@ -188,38 +188,44 @@ class Forth
     @compiled.each do |action|
       action.call
     end
+  ensure
     @compiled = []
   end
-end
 
-forth = Forth.new
-
-if ARGV.count == 0
-  prompt = 'forth> '
-  while line = Readline.readline(prompt, true)
-    save_state = forth.state
-    begin
-      forth.compile(line.split)
-      if forth.control_stack.empty?
-        forth.run
-        prompt = 'forth> '
-      else
-        prompt = '  ... '
-      end
-    rescue => e
-      p e
-      forth.load_state(save_state)
-    end
-  end
-elsif ARGV.count == 1
-  line = ARGV.first
-  begin
-    forth.compile(line.split)
-    if forth.control_stack.empty?
-      forth.run
+  def compile_and_run line
+    compile(line.split)
+    if @control_stack.empty?
+      run
     else
       raise "Control stack not empty: #{forth.control_stack.inspect}"
     end
+  end
+
+  def repl
+    prompt = 'forth> '
+    while line = Readline.readline(prompt, true)
+      save_state = state
+      begin
+        compile(line.split)
+        if @control_stack.empty?
+          run
+          prompt = 'forth> '
+        else
+          prompt = '   ... '
+        end
+      rescue => e
+        p e
+        load_state(save_state)
+      end
+    end
+  end
+end
+
+if ARGV.count == 0
+  Forth.new.repl
+elsif ARGV.count == 1
+  begin
+    Forth.new.compile_and_run ARGV.first
   rescue => e
     p e
     exit 1
