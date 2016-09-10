@@ -20,6 +20,12 @@
 
 require 'readline'
 
+class String
+  def remove_forth_comments
+    self.gsub(/\\.*/, '')
+  end
+end
+
 class Forth
   attr_accessor :runtime_stack, :runtime_words,
                 :control_stack, :control_words,
@@ -129,7 +135,9 @@ class Forth
     @compiled = compiled
   end
 
-  def compile words
+  def compile line
+    words = line.remove_forth_comments.split
+
     words.each do |word|
       control_action = @control_words[word]
       runtime_action = @runtime_words[word]
@@ -193,7 +201,7 @@ class Forth
   end
 
   def compile_and_run line
-    compile(line.split)
+    compile line
     if @control_stack.empty?
       run
     else
@@ -206,7 +214,7 @@ class Forth
     while line = Readline.readline(prompt, true)
       save_state = state
       begin
-        compile(line.split)
+        compile line
         if @control_stack.empty?
           run
           prompt = 'forth> '
