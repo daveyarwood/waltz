@@ -229,19 +229,40 @@ class Forth
   end
 end
 
+############################################################
+# temporary hacky CLI interface for testing
+# TODO: scrap stuff below, make stuff above a library
+############################################################
+
+def print_usage
+  puts <<USAGE
+Usage:
+  #{__FILE__}
+  #{__FILE__} -c 'string of Forth code'
+  #{__FILE__} -f 'filename of a file containing Forth code'
+USAGE
+end
+
 if ARGV.count == 0
   Forth.new.repl
-elsif ARGV.count == 1
+elsif ARGV.count == 2
+  case ARGV[0]
+  when '-c'
+    code = ARGV[1]
+  when '-f'
+    code = File.read(ARGV[1])
+  else
+    print_usage
+    exit 1
+  end
+
   begin
-    Forth.new.compile_and_run ARGV.first
+    Forth.new.compile_and_run code
   rescue => e
     p e
     exit 1
   end
 else
-  puts <<USAGE
-Usage:
-  #{__FILE__}
-  #{__FILE__} 'string of Forth code'
-USAGE
+  print_usage
+  exit 1
 end
