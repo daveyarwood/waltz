@@ -89,7 +89,7 @@ class Forth
         @runtime_stack.push @runtime_stack[-2]
       },
 
-      'dump' => -> {
+      '..' => -> {
         puts "stack: #{@runtime_stack.inspect}"
       },
 
