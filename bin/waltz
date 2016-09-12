@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+
+=begin
+  TODO:
+  - implement : ... ; and other needed Forth features
+  - provide an option to either use the built-in version of waltz.w or accept
+    a file implementing another version of it -- can use this to provide test
+    coverage for changes to the waltz library before releasing new versions
+  - implement unit tests that use the Ruby Waltz interpreter with the current
+    state of the library in this repo
+=end
+
+require 'slop'
+require 'waltz'
+
+def run_code waltz, code
+  begin
+    waltz.compile_and_run code
+  rescue => e
+    p e
+    exit 1
+  end
+end
+
+opts = Slop::Options.new
+opts.string '-c', '--code', 'a string of Waltz code'
+opts.string '-f', '--file', 'a file containing Waltz code'
+opts.bool '-R', '--repl', 'start a REPL'
+
+params = Slop::Parser.new(opts).parse(ARGV).to_hash
+
+if ARGV.empty?
+  puts opts
+  exit 1
+end
+
+waltz = Waltz.new
+
+if params[:file]
+  code = File.read params[:file]
+  run_code waltz, code
+end
+
+if params[:code]
+  run_code waltz, params[:code]
+end
+
+if params[:repl]
+  waltz.repl
+end

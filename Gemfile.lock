@@ -1,0 +1,12 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    slop (4.4.1)
+    waltz_rb (0.0.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  slop (= 4.4.1)
+  waltz_rb (= 0.0.1)
