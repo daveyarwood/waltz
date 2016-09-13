@@ -26,6 +26,14 @@ _TODO_
   >
   > Then get the duration in milliseconds of that number of beats.
 
+## Development
+
+### Running Tests
+
+```
+rspec test
+```
+
 ## License
 
 Copyright © 2016 Dave Yarwood
