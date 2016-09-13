@@ -5,7 +5,7 @@ require_relative 'spec_helper'
 
 describe 'the runtime environment' do
   before(:each) do
-    @waltz = Waltz.new
+    @waltz = Waltz.new(File.read $waltz_lib)
   end
 
   it 'should put numbers on the stack' do

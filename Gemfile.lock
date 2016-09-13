@@ -2,7 +2,6 @@ GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    rake (11.2.2)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -17,13 +16,12 @@ GEM
       rspec-support (~> 3.5.0)
     rspec-support (3.5.0)
     slop (4.4.1)
-    waltz_rb (0.0.1)
+    waltz_rb (0.0.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  rake (= 11.2.2)
   rspec (= 3.5.0)
   slop (= 4.4.1)
-  waltz_rb (= 0.0.1)
+  waltz_rb (= 0.0.3)

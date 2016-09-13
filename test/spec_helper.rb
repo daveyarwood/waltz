@@ -1,3 +1,5 @@
+$waltz_lib = File.expand_path("../../lib/waltz.fs", __FILE__)
+
 def with_out_str
   old_stdout = $stdout
   $stdout = StringIO.new('','w')
